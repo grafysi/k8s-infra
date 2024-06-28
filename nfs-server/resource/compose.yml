@@ -1,0 +1,27 @@
+name: gfs-infra
+services:
+  nfs:
+    image: erichough/nfs-server:2.2.1
+    container_name: gfs-nfs-server
+    volumes:
+      - ${GRAFYSI_CONFIG}/nfs-server/disk:/nfs
+      - ${GRAFYSI_CONFIG}/nfs-server/exports:/etc/exports:ro
+      - /lib/modules:/lib/modules:ro
+      - /sys/kernel/config/nvme:/sys/kernel/config/nvme
+    environment:
+      - NFS_LOG_LEVEL=DEBUG
+      - NFS_DISABLE_VERSION_3=1
+    cap_add:
+      - SYS_ADMIN
+      - SYS_MODULE
+    networks:
+      gfs-network:
+        ipv4_address: ${GRAFYSI_NFS_SERVER_HOST}
+    security_opt:
+      - apparmor=erichough-nfs
+    restart: always
+
+networks:
+  gfs-network:
+    name: ${GRAFYSI_DOCKER_NODE_VLAN_NET}
+    external: true

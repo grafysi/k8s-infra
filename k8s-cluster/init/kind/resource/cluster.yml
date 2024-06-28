@@ -1,0 +1,38 @@
+# nonk8s
+kind: Cluster
+apiVersion: kind.x-k8s.io/v1alpha4
+
+networking:
+  disableDefaultCNI: true
+  kubeProxyMode: none
+
+nodes:
+  - role: control-plane
+    image: kindest/node:v1.30.0
+    labels:
+      grafysi.server.allowed/ingress: true
+      
+  - role: worker
+    image: kindest/node:v1.30.0
+    labels:
+      grafysi.server.allowed/kafka: true
+    
+  - role: worker
+    image: kindest/node:v1.30.0
+    labels:
+      grafysi.server.allowed/neo4j: true
+    
+  - role: worker
+    image: kindest/node:v1.30.0
+    labels:
+      grafysi.server.allowed/neo4j: true
+#
+#  - role: worker
+#    image: kindest/node:v1.30.0
+#    labels:
+#      grafysi.server.allowed/neo4j: true
+#
+#  - role: worker
+#    image: kindest/node:v1.30.0
+#    labels:
+#      grafysi.server.allowed/neo4j: true

@@ -1,0 +1,30 @@
+controller:
+  name: controller
+  kind: Deployment
+  replicaCount: 1
+  ingressClass: haproxy
+  resources:
+    requests:
+      cpu: 250m
+      memory: 400Mi
+  nodeSelector:
+    grafysi.server.allowed/ingress: "true"  # <-- update this line
+  tolerations:
+    - key: "node-role.kubernetes.io/control-plane"
+      operator: "Equal"
+      effect: "NoSchedule"
+
+  service:
+    enabled: true
+    type: LoadBalancer
+    annotations: {}
+    labels: {}
+    nodePorts:
+      http: 30000
+      https: 30001
+      stat: 30002
+      prometheus: 30003
+    externalIPs: [192.168.100.1]
+    loadBalancerIP: "192.168.100.1"
+    loadBalancerSourceRanges: []
+    loadBalancerClass: haproxy

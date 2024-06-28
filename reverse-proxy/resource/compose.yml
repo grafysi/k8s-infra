@@ -1,0 +1,21 @@
+name: gfs-infra
+services:
+  reverse-proxy:
+    image: haproxy:3.0.1
+    container_name: gfs-reverse-proxy
+#    ports:
+#      - "80:80"
+#      - "443:443"
+#      - "8081:8080"
+#      - "8405:8405"
+    volumes:
+      - ${GRAFYSI_CONFIG}/reverse-proxy:/usr/local/etc/haproxy:ro
+    networks:
+      gfs-network:
+        ipv4_address: ${GRAFYSI_REVERSE_PROXY_HOST}
+    restart: always
+
+networks:
+  gfs-network:
+    name: ${GRAFYSI_DOCKER_NODE_VLAN_NET}
+    external: true

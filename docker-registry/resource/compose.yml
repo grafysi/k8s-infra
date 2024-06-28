@@ -1,0 +1,20 @@
+name: gfs-infra
+services:
+  container-registry:
+    image: registry:2
+    container_name: gfs-docker-registry
+#    ports:
+#    - "5001:5000"
+    environment:
+      REGISTRY_STORAGE_FILESYSTEM_ROOTDIRECTORY: /data
+    volumes:
+      - ~/.grafysi/docker-registry/data:/data
+    networks:
+      gfs-network:
+        ipv4_address: ${GRAFYSI_DOCKER_REGISTRY_HOST}
+    restart: always
+
+networks:
+  gfs-network:
+    name: ${GRAFYSI_DOCKER_NODE_VLAN_NET}
+    external: true

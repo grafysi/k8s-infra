@@ -1,0 +1,26 @@
+name: gfs-infra
+
+services:
+  docker_registry_proxy:
+    image: rpardini/docker-registry-proxy:0.6.4
+    container_name: gfs-docker-cache
+    env_file:
+      - ./secrets.env
+    environment:
+      - CACHE_MAX_SIZE=256g
+      - ENABLE_MANIFEST_CACHE=true
+    volumes:
+      - ${GRAFYSI_CONFIG}/docker-cache/data:/docker_mirror_cache
+      - ${GRAFYSI_CONFIG}/docker-cache/certs:/ca
+#    ports:
+#      "3128:3128"
+    networks:
+      gfs-network:
+        ipv4_address: ${GRAFYSI_DOCKER_CACHE_HOST}
+        
+    restart: always
+
+networks:
+  gfs-network:
+    name: ${GRAFYSI_DOCKER_NODE_VLAN_NET}
+    external: true

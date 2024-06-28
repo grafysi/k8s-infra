@@ -1,0 +1,15 @@
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: neo4j-sc
+provisioner: nfs.csi.k8s.io
+parameters:
+  server: 192.168.100.94
+  share: /
+  subDir: ${pvc.metadata.name}-${pv.metadata.name}
+reclaimPolicy: Retain
+volumeBindingMode: WaitForFirstConsumer
+allowVolumeExpansion: true
+mountOptions:
+  - nfsvers=4.2
+
