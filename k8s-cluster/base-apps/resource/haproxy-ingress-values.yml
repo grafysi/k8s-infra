@@ -8,7 +8,7 @@ controller:
       cpu: 250m
       memory: 400Mi
   nodeSelector:
-    grafysi.server.allowed/ingress: "true"  # <-- update this line
+    grafysi.app.allowed/ingress: "true"
   tolerations:
     - key: "node-role.kubernetes.io/control-plane"
       operator: "Equal"

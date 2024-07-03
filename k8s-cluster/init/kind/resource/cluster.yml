@@ -10,22 +10,34 @@ nodes:
   - role: control-plane
     image: kindest/node:v1.30.0
     labels:
-      grafysi.server.allowed/ingress: true
+      grafysi.app.allowed/ingress: true
+    extraMounts:
+      - hostPath: ${GRAFYSI_CONFIG}/local-pv-store
+        containerPath: /local-pv-store
       
   - role: worker
     image: kindest/node:v1.30.0
     labels:
-      grafysi.server.allowed/kafka: true
+      grafysi.app.allowed/kafka: true
+    extraMounts:
+      - hostPath: ${GRAFYSI_CONFIG}/local-pv-store
+        containerPath: /local-pv-store
     
   - role: worker
     image: kindest/node:v1.30.0
     labels:
-      grafysi.server.allowed/neo4j: true
-    
+      grafysi.app.allowed/neo4j: true
+    extraMounts:
+      - hostPath: ${GRAFYSI_CONFIG}/local-pv-store
+        containerPath: /local-pv-store
+
   - role: worker
     image: kindest/node:v1.30.0
     labels:
-      grafysi.server.allowed/neo4j: true
+      grafysi.app.allowed/neo4j: true
+    extraMounts:
+      - hostPath: ${GRAFYSI_CONFIG}/local-pv-store
+        containerPath: /local-pv-store
 #
 #  - role: worker
 #    image: kindest/node:v1.30.0

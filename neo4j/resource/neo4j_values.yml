@@ -12,7 +12,7 @@ disableLookups: false
 
 neo4j:
   # Name of your cluster
-  name: "standalone-admin"
+  name: "my-neo4j-cluster"
   # If password is not set or empty a random password will be generated during installation.
   # Ignored if `neo4j.passwordFromSecret` is provided
   password: "abcd1234"
@@ -106,7 +106,7 @@ volumes:
     # Only used if mode is set to "dynamic"
     # Dynamic provisioning using the provided storageClass
     dynamic:
-      storageClassName: "neo4j-sc"
+      storageClassName: "share-local-sc"
       accessModes:
         - ReadWriteOnce
       requests:

@@ -9,11 +9,17 @@ DOCKER_NET=$GRAFYSI_DOCKER_NODE_VLAN_NET
 
 mkdir -p $CLUSTER_CONFIG_DIR
 
+# copy kind config to the config dir
+cp $KIND_INIT_DIR/resource/cluster.yml $CLUSTER_CONFIG_DIR/kind_cluster.yml
+
+# embed env var to the kind_cluster.yml
+sed -i "s#\${GRAFYSI_CONFIG}#${GRAFYSI_CONFIG}#g" "$CLUSTER_CONFIG_DIR/kind_cluster.yml"
+
 CLUSTER_NAME=$GRAFYSI_CLUSTER_NAME
 
 # create kind cluster
 export KIND_EXPERIMENTAL_DOCKER_NETWORK=$DOCKER_NET
-kind create cluster --name=$CLUSTER_NAME --config=$KIND_INIT_DIR/resource/cluster.yml || true
+kind create cluster --name=$CLUSTER_NAME --config=$CLUSTER_CONFIG_DIR/kind_cluster.yml || true
 
 # as above creation mode is not supported by KIND
 # we need some workarounds
@@ -60,6 +66,11 @@ done
 
 # Print a success message
 echo "API server is ready!"
+
+# delete kind's default storage provisioner
+kubectl delete all --all -n local-path-storage
+kubectl delete sc standard
+kubectl delete ns local-path-storage
 
 
 

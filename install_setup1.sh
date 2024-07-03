@@ -39,13 +39,19 @@ RPROXY_DIR=$INFRA_HOME/reverse-proxy
 bash $RPROXY_DIR/install.sh
 
 # install and config storage server
-echo "##################################### STORAGE SERVER"
-STR_SER_DIR=$INFRA_HOME/storage-server
-bash $STR_SER_DIR/install.sh
+#echo "##################################### STORAGE SERVER"
+#STR_SER_DIR=$INFRA_HOME/storage-server
+#bash $STR_SER_DIR/install.sh
 
 # install base apps (cni, ingress controller) for k8s cluster
+echo "##################################### BASE APPS"
 K8S_BASE_APPS_DIR=$INFRA_HOME/k8s-cluster/base-apps
 bash $K8S_BASE_APPS_DIR/install.sh
+
+# install local path csi
+echo "##################################### LOCAL PATH CSI"
+CSI_DIR=$INFRA_HOME/k8s-cluster/csi
+bash $CSI_DIR/local-path/install.sh
 
 # as running this script require sudo
 # we need to change privileges of created directories
