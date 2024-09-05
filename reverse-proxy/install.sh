@@ -71,6 +71,22 @@ done
 
 echo "" >> $HAPROXY_CFG_FILE
 
+# tls-gateway backend
+echo "backend tls_gateway_back" >> $HAPROXY_CFG_FILE
+echo "  mode tcp" >> $HAPROXY_CFG_FILE
+echo "  balance roundrobin" >> $HAPROXY_CFG_FILE
+
+for LINE in $(echo $(cat ${K8S_NODES_FILE}) | xargs)
+do
+  NODE_VALUES=(${LINE//:/ })
+  NODE_NAME=${NODE_VALUES[0]}
+  NODE_IP=${NODE_VALUES[1]}
+  echo "  server ${NODE_NAME} ${NODE_IP}:30443" >> $HAPROXY_CFG_FILE
+done
+echo "" >> $HAPROXY_CFG_FILE
+
+
+
 # private registry backend
 echo "backend docker_registry" >> $HAPROXY_CFG_FILE
 echo "  balance roundrobin" >> $HAPROXY_CFG_FILE

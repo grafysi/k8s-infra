@@ -1,0 +1,40 @@
+apiVersion: gateway.networking.k8s.io/v1
+kind: GatewayClass
+metadata:
+  name: nodeport-envoy-gateway-class
+  namespace: envoy-gateway-system
+spec:
+  controllerName: gateway.envoyproxy.io/gatewayclass-controller
+  parametersRef:
+    group: gateway.envoyproxy.io
+    kind: EnvoyProxy
+    name: nodeport-envoy-proxy-config
+    namespace: envoy-gateway-system
+---
+apiVersion: gateway.envoyproxy.io/v1alpha1
+kind: EnvoyProxy
+metadata:
+  name: nodeport-envoy-proxy-config
+  namespace: envoy-gateway-system
+spec:
+  provider:
+    type: Kubernetes
+    kubernetes:
+      envoyDeployment:
+        replicas: 1
+      envoyService:
+        type: NodePort
+        patch:
+          value:
+            spec:
+              ports:
+                - name: tls-port
+                  nodePort: 30443
+                  port: 8443
+                  protocol: TCP
+                  targetPort: 8443
+                - name: http-port
+                  nodePort: 30080
+                  port: 8000
+                  protocol: TCP
+                  targetPort: 8000
