@@ -38,6 +38,14 @@ nodes:
     extraMounts:
       - hostPath: ${GRAFYSI_CONFIG}/local-pv-store
         containerPath: /local-pv-store
+
+  - role: worker
+    image: kindest/node:v1.30.0
+    labels:
+      grafysi.app.allowed/neo4j: true
+    extraMounts:
+      - hostPath: ${GRAFYSI_CONFIG}/local-pv-store
+        containerPath: /local-pv-store
 #
 #  - role: worker
 #    image: kindest/node:v1.30.0
