@@ -1,0 +1,1 @@
+kubectl create secret generic dockerio --from-file=.dockerconfigjson=$HOME/.docker/config.json --type=kubernetes.io/dockerconfigjson -n hzp-system
